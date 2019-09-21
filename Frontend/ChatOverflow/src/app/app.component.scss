@@ -1,0 +1,31 @@
+#main-area {
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    flex-flow: column;
+    justify-content: stretch;
+    height: 100vh;
+    max-height: 100vh;
+
+    #top-area {
+        width: 100vw;
+    }
+
+    #mid-area {
+        display: flex;
+        width: 100vw;
+        flex: 1;
+
+        #sidenav-area {
+            position: relative;
+            background-color: rgba(#1e1e1e, 0.7);
+            width: 300pt;
+            min-height: 100%;
+        }
+        
+        #content-area {
+            width: calc(100vw - 300pt);
+            min-height: 100%;
+        }
+    }
+}
