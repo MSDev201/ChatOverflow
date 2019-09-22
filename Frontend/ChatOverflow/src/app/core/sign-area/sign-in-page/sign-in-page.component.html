@@ -1,0 +1,15 @@
+<form class="panel-content" [formGroup]="signInForm">
+    <h1>Anmelden</h1>
+    <div class="form-group">
+        <label class="col-form-label" for="inputDefault">Benutzername</label>
+        <input type="text" class="form-control" placeholder="Benutzername" formControlName="nameId">
+    </div>
+    <div class="form-group">
+        <label class="col-form-label" for="inputDefault">Passwort</label>
+        <input type="password" class="form-control" placeholder="Passwort" formControlName="password">
+    </div>
+    <div class="sign-action-buttons">
+        <button type="button" class="btn btn-primary">Anmelden</button>
+        <button type="button" class="btn btn-info" [routerLink]="['/sign/up']">Registrieren</button>
+    </div>
+</form>

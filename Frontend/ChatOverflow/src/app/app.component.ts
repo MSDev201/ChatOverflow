@@ -10,13 +10,6 @@ export class AppComponent {
   title = 'ChatOverflow';
 
   constructor(private router: Router) {
-
-    const isSignedIn = true;
-    if (isSignedIn) {
-      router.navigate(['/chat']);
-    } else {
-      router.navigate(['/sign']);
-    }
     
 
   }

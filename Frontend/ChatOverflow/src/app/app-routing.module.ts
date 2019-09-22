@@ -5,8 +5,11 @@ import { Routes, RouterModule } from '@angular/router';
 const routes: Routes = [
   { 
     path: 'chat',
-    loadChildren: () => import('./core/chat-area/chat-area.module').then(mod => mod.ChatAreaModule),
-    pathMatch: 'full',
+    loadChildren: () => import('./core/chat-area/chat-area.module').then(mod => mod.ChatAreaModule)
+  },
+  { 
+    path: 'sign',
+    loadChildren: () => import('./core/sign-area/sign-area.module').then(mod => mod.SignAreaModule)
   }
 ];
 

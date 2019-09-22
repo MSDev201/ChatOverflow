@@ -19,6 +19,5 @@ import { SideNavComponent } from './side-nav/side-nav.component';
     CommonModule,
     ChatAreaRoutingModule,
   ],
-  bootstrap: [ChatAreaComponent],
 })
 export class ChatAreaModule { }

@@ -1,0 +1,36 @@
+@import '../../theme/colors.scss';
+
+#main-area {
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    flex-flow: column;
+    justify-content: stretch;
+    height: 100vh;
+    max-height: 100vh;
+
+    #top-area {
+        width: 100vw;
+    }
+
+    #mid-area {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100vw;
+        flex: 1;
+        
+        #content-area {
+            background-color: rgba($background-color, 0.9);
+            width: 400pt;
+            max-width: 100%;
+        }
+    }
+}
+
+#sign-panel {
+    display: flex;
+    flex-direction: column;
+
+    
+}
