@@ -123,10 +123,11 @@
                 padding: 10pt;
                 background-color: rgba($sidenav-color, 0.95);
                 width: 500pt;
-                max-width: calc(100% - 50pt);
+                max-width: calc(100% - 90pt);
         
                 &.own-msg {
                     align-self: flex-end;
+                    background-color: rgba(#082835, 0.95);
                 }
 
                 .chat-content {
