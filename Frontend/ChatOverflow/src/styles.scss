@@ -2,7 +2,8 @@
 body {
     background-color: $background-color !important;
     background-image: url(/assets/images/testbg.jpg);
-    background-size: cover;
+	background-size: cover;
+	background-position: center;
 }
 
 *::-webkit-scrollbar-track

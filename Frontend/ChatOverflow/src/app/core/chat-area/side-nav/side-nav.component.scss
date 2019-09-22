@@ -1,0 +1,43 @@
+@import '../../../theme/colors.scss';
+
+.chat-list-group {
+    display: flex;
+    flex-direction: column;
+    flex-flow: column;
+
+    .chat-item {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        max-width: 100%;
+        align-items: center;
+        justify-content: left;
+        padding: 8pt 15pt;
+        transition: all 0.2s ease-in-out;
+        cursor: pointer;
+        border-bottom: solid 1px rgba($sidenav-color, 0.9);
+
+        &:hover {
+            background-color: rgba($sidenav-color, 0.9);
+        }
+
+        .chat-details {
+            display: flex;
+            flex-direction: column;
+            margin-left: 10pt;
+
+            .chat-name {
+                color: #fff;
+                font-size: 12pt;
+            }
+        }
+
+        .chat-image {
+            background-size: cover;
+            background-position: center;
+            border-radius: 100%;
+            width: 35pt;
+            height: 35pt;
+        }
+    }
+}
