@@ -170,6 +170,8 @@ namespace ChatOverflow
 
             app.UseAuthentication();
 
+            app.UseWebSockets();
+
             app.UseMvc();
 
             // ===== Create tables ======
