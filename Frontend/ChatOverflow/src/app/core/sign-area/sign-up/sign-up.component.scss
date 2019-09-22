@@ -1,0 +1,14 @@
+.panel-content {
+    padding: 50pt 25pt;
+    text-align: left;
+    background-color: #e8e8e8;
+
+    .sign-action-buttons {
+        margin-top: 25pt;
+        display: flex;
+        justify-content: stretch;
+        button {
+            flex: 1;
+        }
+    }
+}
