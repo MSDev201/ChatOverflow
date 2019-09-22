@@ -1,0 +1,14 @@
+D:\Dev\Projekte\ChatOverflow\ChatOverflow\ChatOverflow\obj\Debug\netcoreapp2.2\ChatOverflow.csprojAssemblyReference.cache
+D:\Dev\Projekte\ChatOverflow\ChatOverflow\ChatOverflow\obj\Debug\netcoreapp2.2\ChatOverflow.csproj.CoreCompileInputs.cache
+D:\Dev\Projekte\ChatOverflow\ChatOverflow\ChatOverflow\obj\Debug\netcoreapp2.2\ChatOverflow.RazorAssemblyInfo.cache
+D:\Dev\Projekte\ChatOverflow\ChatOverflow\ChatOverflow\obj\Debug\netcoreapp2.2\ChatOverflow.RazorAssemblyInfo.cs
+D:\Dev\Projekte\ChatOverflow\ChatOverflow\ChatOverflow\obj\Debug\netcoreapp2.2\ChatOverflow.AssemblyInfoInputs.cache
+D:\Dev\Projekte\ChatOverflow\ChatOverflow\ChatOverflow\obj\Debug\netcoreapp2.2\ChatOverflow.AssemblyInfo.cs
+D:\Dev\Projekte\ChatOverflow\ChatOverflow\ChatOverflow\bin\Debug\netcoreapp2.2\ChatOverflow.deps.json
+D:\Dev\Projekte\ChatOverflow\ChatOverflow\ChatOverflow\bin\Debug\netcoreapp2.2\ChatOverflow.runtimeconfig.json
+D:\Dev\Projekte\ChatOverflow\ChatOverflow\ChatOverflow\bin\Debug\netcoreapp2.2\ChatOverflow.runtimeconfig.dev.json
+D:\Dev\Projekte\ChatOverflow\ChatOverflow\ChatOverflow\bin\Debug\netcoreapp2.2\ChatOverflow.dll
+D:\Dev\Projekte\ChatOverflow\ChatOverflow\ChatOverflow\bin\Debug\netcoreapp2.2\ChatOverflow.pdb
+D:\Dev\Projekte\ChatOverflow\ChatOverflow\ChatOverflow\obj\Debug\netcoreapp2.2\ChatOverflow.RazorTargetAssemblyInfo.cache
+D:\Dev\Projekte\ChatOverflow\ChatOverflow\ChatOverflow\obj\Debug\netcoreapp2.2\ChatOverflow.dll
+D:\Dev\Projekte\ChatOverflow\ChatOverflow\ChatOverflow\obj\Debug\netcoreapp2.2\ChatOverflow.pdb
