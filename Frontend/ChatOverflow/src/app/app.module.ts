@@ -6,13 +6,15 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavBarComponent } from './core/nav-bar/nav-bar.component';
 import { SideNavComponent } from './core/side-nav/side-nav.component';
+import { ChatPageComponent } from './core/pages/chat-page/chat-page.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     NavBarComponent,
-    SideNavComponent
+    SideNavComponent,
+    ChatPageComponent
   ],
   imports: [
     BrowserModule,

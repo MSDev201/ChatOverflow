@@ -1,0 +1,102 @@
+@import '../../../theme/colors.scss';
+
+#chat-page {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    .chat-header {
+        display: flex;
+        align-items: center;
+        padding: 10pt 30pt;
+        background-color: rgba($sidenav-color, 0.9);
+
+        .chat-image {
+            width: 30pt;
+            height: 30pt;
+            border-radius: 100%;
+            background-size: cover;
+            background-position: center;
+        }
+        .chat-details {
+            margin: 0pt 15pt;
+            display: flex;
+            flex-direction: column;
+            .chat-name {
+                font-size: 12pt;
+                color: #fff;
+            }
+        }
+        
+    }
+
+    .chat-msg-group {
+        flex: 1;
+        position: relative;
+
+        .chat-msg-items {
+            display: flex;
+            flex: 1;
+            flex-direction: column-reverse;
+            justify-items: flex-end;
+
+            position: absolute; 
+            left: 0; top: 0; 
+            right: 0; bottom: 0;
+            overflow: auto;
+        }
+
+        .chat-msg-item {
+            margin-bottom: 20pt;
+            margin-left: 30pt;
+            margin-right: 30pt;
+    
+            display: flex;
+            flex-direction: column;
+            padding: 10pt;
+            background-color: rgba($sidenav-color, 0.95);
+            width: 500pt;
+            max-width: calc(100% - 90pt);
+    
+            &.own-msg {
+                align-self: flex-end;
+                background-color: rgba(#082835, 0.95);
+            }
+
+            .chat-content {
+                .chat-autor {
+                    color: #fff;
+                }
+                .chat-msg {
+                    
+                }
+            }
+        }
+    }
+
+    .chat-write {
+        background-color: rgba($sidenav-color, 0.9);
+        display: flex;
+        flex-direction: column;
+
+        .write-space {
+            display: flex;
+            width: 100%;
+
+            [contenteditable=true]:empty:before{
+                content: attr(placeholder);
+                color: #999;
+                display: block; /* For Firefox */
+            }
+
+            .text-area {
+                font-size: 11pt;
+                color: #fff;
+                height: 100%;
+                padding: 10pt 15pt;
+                background-color: rgba($background-color, 0.9);
+                width: 100%;
+            }
+        }
+    }
+}

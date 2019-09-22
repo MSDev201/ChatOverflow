@@ -4,3 +4,20 @@ body {
     background-image: url(/assets/images/testbg.jpg);
     background-size: cover;
 }
+
+*::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: rgba($background-color, 0.2);
+}
+
+*::-webkit-scrollbar
+{
+	width: 6px;
+	background-color: rgba($background-color, 0.2);
+}
+
+*::-webkit-scrollbar-thumb
+{
+	background-color: $sidenav-color;
+}
