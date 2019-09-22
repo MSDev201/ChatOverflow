@@ -1,14 +1,65 @@
-
 <div id="main-area">
   <div id="top-area">
     <app-nav-bar></app-nav-bar>
   </div>
   <div id="mid-area">
-    <div id="sidenav-area"></div>
+    <div id="sidenav-area">
+      <div class="chat-list-group">
+        <div class="chat-item" *ngFor="let item of [1,2,3,4]">
+          <div class="chat-image"
+            style="background-image: url(https://avatars0.githubusercontent.com/u/29818976?s=460&v=4)"></div>
+          <div class="chat-details">
+            <div class="chat-name">Name der Gruppe</div>
+            <div class="chat-last-msg">Die letzte Nachricht...</div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div id="content-area">
-        
-        <router-outlet></router-outlet>
+
+      <div id="chat-page">
+
+        <div class="chat-header">
+          <div class="chat-image"
+            style="background-image: url(https://avatars0.githubusercontent.com/u/29818976?s=460&v=4)"></div>
+            <div class="chat-details">
+                <span class="chat-name">Name der Gruppe</span>
+                <span class="chat-member">Ich, du, er, sie, es und wir</span>
+            </div>
+          
+        </div>
+        <div class="chat-msg-group">
+          <div class="chat-msg-item" [class.own-msg]="item % 2 == 0" *ngFor="let item of [1,2,3,4]">
+            <div class="chat-content">
+              <div class="chat-autor">
+                MSDev
+              </div>
+              <div class="chat-msg">
+                {{item}}Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt
+                ut
+                labore
+                et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea
+                rebum.
+                Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit
+                amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna
+                aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita
+                kasd
+                gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chat-write">
+          <div class="write-space">
+            <div class="text-area" contenteditable="true" placeholder="Schreib etwas..."></div>
+          </div>
+        </div>
+
+
+      </div>
+      <router-outlet></router-outlet>
     </div>
   </div>
-  
+
 </div>

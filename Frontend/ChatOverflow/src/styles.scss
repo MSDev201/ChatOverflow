@@ -1,5 +1,6 @@
-
-
+@import './app/theme/colors.scss';
 body {
-    background-color: #161618 !important;
+    background-color: $background-color !important;
+    background-image: url(/assets/images/testbg.jpg);
+    background-size: cover;
 }
