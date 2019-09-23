@@ -29,9 +29,15 @@ namespace ChatOverflow.Models.DB.UserModels
         public bool Active { get { return Expires != null && Expires > DateTime.Now; } }
 
 
-        public UserSpecificToken(UserSpecificTokenType type, DateTime expireDate)
+        public static UserSpecificToken Generate(UserSpecificTokenType type, DateTime expireDate)
         {
-            Token = RandomString.Generate(70);
+            var token = RandomString.Generate(70);
+            return new UserSpecificToken
+            {
+                Expires = expireDate,
+                Type = type,
+                Token = token
+            };
         }
     }
 }
