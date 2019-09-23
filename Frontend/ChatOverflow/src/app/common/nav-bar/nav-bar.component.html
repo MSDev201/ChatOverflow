@@ -1,23 +1,40 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <a class="navbar-brand" href="#">Chat<span class="exclusive">Overflow</span></a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-  
-    <div class="collapse navbar-collapse">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/']" routerLinkActive="active" >Home <span class="sr-only">(current)</span></a>
-        </li>
-      </ul>
+  <a class="navbar-brand" href="#">Chat<span class="exclusive">Overflow</span></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
+    aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
-      <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" [routerLink]="['/sign/in']" routerLinkActive="active" >Anmelden</a>
+  <div class="collapse navbar-collapse">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/']" routerLinkActive="active">Home <span
+            class="sr-only">(current)</span></a>
+      </li>
+    </ul>
+
+    <ul class="navbar-nav" *ngIf="false">
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/sign/in']" routerLinkActive="active">Anmelden</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link exclusive" [routerLink]="['/sign/up']" routerLinkActive="active">Registrieren</a>
+      </li>
+    </ul>
+
+    <ul class="navbar-nav" ngbDropdown>
+        <li class="nav-item" ngbDropdown display="dynamic" placement="bottom-right">
+            <a class="nav-link" style="cursor: pointer" ngbDropdownToggle role="button">
+              MSDev
+            </a>
+            <div ngbDropdownMenu class="dropdown-menu">
+              <a class="dropdown-item" href="#" (click)="$event.preventDefault()">Profil</a>
+              <a class="dropdown-item" href="#" (click)="$event.preventDefault()">Einstellungen</a>
+              <a class="dropdown-item" href="#" (click)="$event.preventDefault()">Abmelden</a>
+            </div>
           </li>
-          <li class="nav-item">
-            <a class="nav-link exclusive" [routerLink]="['/sign/up']" routerLinkActive="active" >Registrieren</a>
-          </li>
-        </ul>
-    </div>
-  </nav>
+            
+      
+    </ul>
+  </div>
+</nav>

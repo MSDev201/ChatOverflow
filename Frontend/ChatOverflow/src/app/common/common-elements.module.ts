@@ -18,6 +18,7 @@ import { RouterModule } from '@angular/router';
     NgbModule,
     FormsModule,
     ReactiveFormsModule,
+    CommonModule
   ],
   exports: [
     NavBarComponent
