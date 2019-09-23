@@ -13,7 +13,7 @@
       </li>
     </ul>
 
-    <ul class="navbar-nav" *ngIf="false">
+    <ul class="navbar-nav" *ngIf="!isLoggedIn">
       <li class="nav-item">
         <a class="nav-link" [routerLink]="['/sign/in']" routerLinkActive="active">Anmelden</a>
       </li>
@@ -22,7 +22,7 @@
       </li>
     </ul>
 
-    <ul class="navbar-nav" ngbDropdown>
+    <ul class="navbar-nav" ngbDropdown *ngIf="isLoggedIn">
         <li class="nav-item" ngbDropdown display="dynamic" placement="bottom-right">
             <a class="nav-link" style="cursor: pointer" ngbDropdownToggle role="button">
               MSDev
@@ -30,7 +30,7 @@
             <div ngbDropdownMenu class="dropdown-menu">
               <a class="dropdown-item" href="#" (click)="$event.preventDefault()">Profil</a>
               <a class="dropdown-item" href="#" (click)="$event.preventDefault()">Einstellungen</a>
-              <a class="dropdown-item" href="#" (click)="$event.preventDefault()">Abmelden</a>
+              <span class="dropdown-item pointer" (click)="signOut()">Abmelden</span>
             </div>
           </li>
             
