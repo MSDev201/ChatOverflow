@@ -7,9 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ChatOverflow.V1.Controller.UserControllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class UserController : ControllerBase
+    public class UserController : ApiController
     {
     }
 }

@@ -12,9 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ChatOverflow.V1.Controller.UserControllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class UserAuthController : ControllerBase
+    public class UserAuthController : ApiController
     {
 
         private readonly IUserProvider _user;
