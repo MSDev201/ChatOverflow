@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
@@ -18,11 +19,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Swashbuckle.AspNetCore.SwaggerGen;
-using Swashbuckle.AspNetCore.Swagger;
 using ChatOverflow.Extensions;
 using ChatOverflow.Persistent;
 using ChatOverflow.Dependent.Swagger;
+using ChatOverflow.Models.DB.UserModels;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace ChatOverflow
 {
@@ -43,53 +45,54 @@ namespace ChatOverflow
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             // Database
-            //services.AddDbContext<CoreDbContext>(options => options.UseMySql(Configuration.GetConnectionString("Main")));
+            services.AddDbContext<CoreDbContext>(options => options.UseMySql(Configuration.GetConnectionString("Main")));
 
             // Add Identity
-            //services.AddIdentity<ApplicationUser, IdentityRole>()
-            //    .AddEntityFrameworkStores<CoreDbContext>()
-            //    .AddDefaultTokenProviders();
+            services.AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<CoreDbContext>()
+                .AddDefaultTokenProviders();
 
-            //services.Configure<IdentityOptions>(options => {
-            //    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(3);
-            //    options.Lockout.MaxFailedAccessAttempts = 10;
-            //    options.Lockout.AllowedForNewUsers = true;
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(3);
+                options.Lockout.MaxFailedAccessAttempts = 10;
+                options.Lockout.AllowedForNewUsers = true;
 
-            //    options.Password.RequireDigit = false;
-            //    options.Password.RequireLowercase = false;
-            //    options.Password.RequireNonAlphanumeric = false;
-            //    options.Password.RequireUppercase = false;
-            //    options.Password.RequiredLength = 5;
-            //    options.Password.RequiredUniqueChars = 1;
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 5;
+                options.Password.RequiredUniqueChars = 1;
 
-            //    options.SignIn.RequireConfirmedEmail = false;
-            //    options.SignIn.RequireConfirmedPhoneNumber = false;
+                options.SignIn.RequireConfirmedEmail = false;
+                options.SignIn.RequireConfirmedPhoneNumber = false;
 
-            //    options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_";
-            //    options.User.RequireUniqueEmail = true;
-            //});
+                options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_ {}-~";
+                options.User.RequireUniqueEmail = true;
+            });
 
-            //// Add Jwt Authentication
-            //JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear(); // => remove default claims
-            //services.AddAuthentication(options =>
-            //{
-            //    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            //    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            //    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            // Add Jwt Authentication
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear(); // => remove default claims
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 
-            //}).AddJwtBearer(cfg =>
-            //{
-            //    cfg.RequireHttpsMetadata = false;
-            //    cfg.SaveToken = true;
-            //    cfg.TokenValidationParameters = new TokenValidationParameters
-            //    {
-            //        ValidateIssuerSigningKey = true,
-            //        ValidIssuer = Configuration.GetSection("Jwt")["Issuer"],
-            //        ValidAudience = Configuration.GetSection("Jwt")["Issuer"],
-            //        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetSection("Jwt")["Key"])),
-            //        ClockSkew = TimeSpan.Zero // remove delay of token when expire
-            //    };
-            //});
+            }).AddJwtBearer(cfg =>
+            {
+                cfg.RequireHttpsMetadata = false;
+                cfg.SaveToken = true;
+                cfg.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = Configuration.GetSection("Jwt")["Issuer"],
+                    ValidAudience = Configuration.GetSection("Jwt")["Issuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetSection("Jwt")["Key"])),
+                    ClockSkew = TimeSpan.Zero // remove delay of token when expire
+                };
+            });
 
             // Default routing
             services.AddMvc(config =>
@@ -138,7 +141,8 @@ namespace ChatOverflow
         public void Configure(
             IApplicationBuilder app,
             IHostingEnvironment env,
-            IApiVersionDescriptionProvider provider
+            IApiVersionDescriptionProvider provider,
+            CoreDbContext dbContext
             )
         {
             if (env.IsDevelopment())
@@ -175,7 +179,7 @@ namespace ChatOverflow
             app.UseMvc();
 
             // ===== Create tables ======
-            //dbContext.Database.EnsureCreated();
+            dbContext.Database.EnsureCreated();
         }
     }
 }
