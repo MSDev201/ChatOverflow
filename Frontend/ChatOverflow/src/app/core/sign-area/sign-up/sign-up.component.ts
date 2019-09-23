@@ -1,8 +1,9 @@
 import { UserSignService } from './../../../services/user/user-sign.service';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { debounceTime, map, switchMap } from 'rxjs/operators';
+import { debounceTime, map, switchMap, catchError } from 'rxjs/operators';
 import { IUserSignUp } from 'src/app/models/api/user-sign-up';
+import { throwError } from 'rxjs';
 
 
 enum MsgBoxLocation {
@@ -149,7 +150,20 @@ export class SignUpComponent implements OnInit {
     const createObs = this.userSignService.SignUp(convertedValues);
     createObs.subscribe(result => {
       if (result.status === 201) { // Success
-        this.signUpSuccess = true;
+        this.userSignService.SignIn({
+          nameId: convertedValues.userName,
+          password: convertedValues.password
+        }).pipe(
+          map(x => x),
+          catchError(error => {
+            if (error.status === 400) { // Bad request
+              console.error('Sign in after register failed!');
+            } else if (error.status === 403) { // Forbidden (locked out)
+              console.log('Forbidden');
+            }
+            return throwError(error);
+          })
+        ).subscribe();
         this.signUpForm.reset('');
       }
     });
