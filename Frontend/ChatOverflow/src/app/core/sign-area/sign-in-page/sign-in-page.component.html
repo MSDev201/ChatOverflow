@@ -8,8 +8,11 @@
         <label class="col-form-label" for="inputDefault">Passwort</label>
         <input type="password" class="form-control" placeholder="Passwort" formControlName="password">
     </div>
+    <div *ngIf="showLoginFailed">
+        <div class="alert alert-danger">Benutzername / E-Mail oder Passwort falsch!</div>
+    </div>
     <div class="sign-action-buttons">
-        <button type="button" class="btn btn-primary">Anmelden</button>
+        <button type="submit" class="btn btn-primary" (click)="login()">Anmelden</button>
         <button type="button" class="btn btn-info" [routerLink]="['/sign/up']">Registrieren</button>
     </div>
 </form>

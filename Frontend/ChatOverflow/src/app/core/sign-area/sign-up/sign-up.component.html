@@ -45,7 +45,7 @@
         [class.alert-danger]="msg.type == 2" >{{ msg.msg }}</div>
     </div>
     <div class="sign-action-buttons">
-        <button type="button" class="btn btn-primary" [disabled]="msgBoxes.length > 0" (click)="register()">Registrieren</button>
+        <button type="submit" class="btn btn-primary" [disabled]="msgBoxes.length > 0" (click)="register()">Registrieren</button>
         <button type="button" class="btn btn-info" [routerLink]="['/sign/in']">Anmelden</button>
     </div>
 </form>
