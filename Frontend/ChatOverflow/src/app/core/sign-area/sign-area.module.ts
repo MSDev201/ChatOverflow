@@ -1,3 +1,4 @@
+import { UserSignService } from './../../services/user/user-sign.service';
 import { CommonElementsModule } from './../../common/common-elements.module';
 import { AppModule } from './../../app.module';
 import { NgModule } from '@angular/core';
@@ -22,6 +23,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     CommonModule,
     ReactiveFormsModule,
     CommonElementsModule
+  ],
+  providers: [
+    UserSignService
   ]
 })
 export class SignAreaModule { }

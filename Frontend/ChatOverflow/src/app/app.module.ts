@@ -12,6 +12,7 @@ import { ChatAreaModule } from './core/chat-area/chat-area.module';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { SignAreaModule } from './core/sign-area/sign-area.module';
 import { UserAuthService } from './services/user/user-auth.service';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import { UserAuthService } from './services/user/user-auth.service';
     NgbModule,
     FormsModule,
     ReactiveFormsModule,
+    HttpClientModule,
   ],
   providers: [
     UserAuthService,
