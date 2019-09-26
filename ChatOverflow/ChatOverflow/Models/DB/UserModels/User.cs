@@ -9,5 +9,10 @@ namespace ChatOverflow.Models.DB.UserModels
     public class User : IdentityUser
     {
         public ICollection<UserSpecificToken> Tokens { get; set; }
+
+        public User()
+        {
+            Tokens = new List<UserSpecificToken>();
+        }
     }
 }

@@ -1,0 +1,37 @@
+<form id="chat-form-page" [formGroup]="createGroupForm">
+    <h1>Gruppenchat erstellen</h1>
+    <div class="form-group">
+        <label class="col-form-label">Gruppenname</label>
+        <input type="text" class="form-control" placeholder="Gruppenname" formControlName="name">
+    </div>
+    <div class="form-group">
+        <label>Nutzer können der Gruppe beitreten wenn..</label><br>
+        <div class="btn-group btn-group-toggle" formGroupName="access">
+            <label class="btn btn-secondary" [class.active]="createGroupForm?.value?.access?.usersInList">
+                <input type="checkbox" formControlName="usersInList"> sie in der Nutzerliste sind
+            </label>
+            <label class="btn btn-secondary" [class.active]="createGroupForm?.value?.access?.password">
+                <input type="checkbox" formControlName="password"> das Passwort haben
+            </label>
+            <label class="btn btn-secondary" [class.active]="createGroupForm?.value?.access?.link">
+                <input type="checkbox" formControlName="link"> den Link haben
+            </label>
+        </div>
+    </div>
+
+    <p class="form-group" *ngIf="createGroupForm?.value?.access?.link">
+        Nach dem Erstellen der Gruppe wird ein Link generiert mit welchem Nutzer dieser Gruppe beitreten können.
+    </p>
+
+    <div class="form-group" *ngIf="createGroupForm?.value?.access?.password">
+        <label class="col-form-label">Passwort zum beitreten</label>
+        <input type="password" class="form-control" placeholder="Passwort" formControlName="password">
+    </div>
+
+    <div class="form-group" *ngIf="createGroupForm?.value?.access?.usersInList">
+        <label class="col-form-label">Nutzer der Gruppe hinzufügen</label>
+        <input type="text" class="form-control" placeholder="Nutzer suchen...">
+    </div>
+
+    
+</form>

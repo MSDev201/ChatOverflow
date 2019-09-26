@@ -105,7 +105,7 @@ namespace ChatOverflow.Infrastructure.UserProividers.UserAuthProvider
             var outputToken = UserSpecificToken.Generate(UserSpecificTokenType.RefreshToken, expires);
 
             // Save
-            await _context.UserSpecificTokens.AddAsync(outputToken);
+            user.Tokens.Add(outputToken);
             await _context.SaveChangesAsync();
             return outputToken;
         }
@@ -130,7 +130,7 @@ namespace ChatOverflow.Infrastructure.UserProividers.UserAuthProvider
 
                 var refreshToken = readToken.FindFirst("RefreshToken");
                 // Check if valide
-                var foundRefreshToken = await _context.UserSpecificTokens.SingleOrDefaultAsync(x => x.User.Id.Equals(user.Id) && x.Id.Equals(refreshToken.Value) && x.Type == UserSpecificTokenType.RefreshToken);
+                var foundRefreshToken = await _context.UserSpecificTokens.SingleOrDefaultAsync(x => x.User.Id.Equals(user.Id) && x.Token.Equals(refreshToken.Value) && x.Type == UserSpecificTokenType.RefreshToken);
                 if (foundRefreshToken == null)
                     return null;
 
