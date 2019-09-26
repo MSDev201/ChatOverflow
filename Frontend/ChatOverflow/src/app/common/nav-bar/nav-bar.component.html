@@ -1,9 +1,5 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<nav class="navbar navbar-dark bg-primary navbar-expand">
   <a class="navbar-brand" href="#">Chat<span class="exclusive">Overflow</span></a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
-    aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
 
   <div class="collapse navbar-collapse">
     <ul class="navbar-nav mr-auto">
@@ -25,7 +21,7 @@
     <ul class="navbar-nav" ngbDropdown *ngIf="isLoggedIn">
         <li class="nav-item" ngbDropdown display="dynamic" placement="bottom-right">
             <a class="nav-link" style="cursor: pointer" ngbDropdownToggle role="button">
-              MSDev
+              {{(userDetails$ | async)?.displayName}}
             </a>
             <div ngbDropdownMenu class="dropdown-menu">
               <a class="dropdown-item" href="#" (click)="$event.preventDefault()">Profil</a>

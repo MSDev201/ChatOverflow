@@ -1,3 +1,4 @@
+import { UserService } from './../../services/user/user.service';
 import { Component, OnInit } from '@angular/core';
 import { UserAuthService } from 'src/app/services/user/user-auth.service';
 
@@ -10,9 +11,14 @@ export class NavBarComponent implements OnInit {
 
   public isLoggedIn = false;
 
+  public userDetails$;
+
   constructor(
-    private userAuthService: UserAuthService
-  ) { }
+    private userAuthService: UserAuthService,
+    private userService: UserService
+  ) {
+    this.userDetails$ = this.userService.GetCurrentUserDetails();
+  }
 
   ngOnInit() {
     this.isLoggedIn = this.userAuthService.IsLoggedIn();

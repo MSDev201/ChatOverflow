@@ -4,6 +4,7 @@ body {
     background-image: url(/assets/images/testbg.jpg);
 	background-size: cover;
 	background-position: center;
+	min-height: 100vh;
 }
 
 *::-webkit-scrollbar-track
