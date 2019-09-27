@@ -40,6 +40,17 @@ export class UserService {
     
   }
 
+  public GetUsersBySearchTerm(term: string) {
+    return this.apiService.MakeSecureGetRequest<IUserDetails[]>('v1/User/List/Search/' + encodeURI(term)).pipe(
+      map(x => {
+        if (x.status === 200) {
+          return x.body;
+        }
+      }),
+      catchError(x => throwError(x))
+    );
+  }
+
 
 
   
