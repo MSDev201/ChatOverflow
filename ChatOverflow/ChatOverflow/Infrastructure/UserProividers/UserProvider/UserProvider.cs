@@ -1,6 +1,7 @@
 ﻿using ChatOverflow.Attributes;
 using ChatOverflow.Models.DB.UserModels;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,6 +39,17 @@ namespace ChatOverflow.Infrastructure.UserProividers.UserProvider
             if (user == null)
                 return null;
             return user;
+        }
+
+        #endregion
+
+        #region GetListBy
+
+        public async Task<List<User>> GetAllMatchingTerm(string searchTerm)
+        {
+            return await _userManager.Users
+                .Where(x => x.NormalizedUserName.Contains(searchTerm.Normalize()))
+                .ToListAsync();
         }
 
         #endregion

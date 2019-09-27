@@ -13,6 +13,7 @@ namespace ChatOverflow.Infrastructure.UserProividers.UserProvider
     {
         Task<IList<IdentityError>> CheckCreateableAsync(string username, string email, string password);
         Task<IdentityResult> CreateAsync(string username, string email, string password);
+        Task<List<User>> GetAllMatchingTerm(string searchTerm);
         Task<User> GetByIdAsync(string userId);
         Task<User> GetByNameOrEmailAsync(string nameId);
     }
