@@ -26,6 +26,7 @@ import { HttpClientModule } from '@angular/common/http';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    
   ],
   providers: [
     UserAuthService,

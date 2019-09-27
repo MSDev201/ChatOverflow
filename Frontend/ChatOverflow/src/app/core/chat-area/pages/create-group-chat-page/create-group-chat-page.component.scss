@@ -113,3 +113,69 @@
         }
     }
 }
+
+.autocomplete {
+    position: relative;
+
+    .autocomplete-res {
+        width: 100%;
+        max-height: 200pt;
+        background-color: $input-background-color;
+        position: absolute;
+        left: 0; right: 0;
+        color: $font-color-foreground;
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+
+        .autocomplete-item {
+            background-color: $input-background-color;
+            color: $font-color-foreground;
+            padding: 7pt 14pt;
+            transition: 0.15s all ease-in-out;
+            border-top: 1pt solid rgba($input-background-color-hover, 0.3);
+
+            &:hover {
+                background-color: $input-background-color-hover;
+                color: rgba($font-color-foreground, 0.9);
+            }
+
+            .ac-user-content {
+                width: 100%;
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: center;
+
+                .user-img {
+                    width: 25pt;
+                    height: 25pt;
+                    background-position: center;
+                    background-size: cover;
+                    border-radius: 100%;
+                }
+
+                .user-details {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: center;
+
+                    margin: 0pt 15pt;
+
+                    span {
+                        margin: 0pt 5pt;
+                        color: rgba($font-color-foreground, 0.5);
+                    }
+
+                    .title {
+                        font-weight: bold;
+                        color: $font-color-foreground;
+                    }
+                }
+            }
+        }
+    
+    }
+
+}

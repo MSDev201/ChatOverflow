@@ -15,10 +15,10 @@ import { RouterModule } from '@angular/router';
   ],
   imports: [
     RouterModule,
-    NgbModule,
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
+    NgbModule
   ],
   exports: [
     NavBarComponent

@@ -20,6 +20,8 @@ namespace ChatOverflow.Infrastructure.UserProividers.UserProvider
             _userManager = userManager;
         }
 
+        #region GetBy
+
         public async Task<User> GetByIdAsync(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
@@ -37,6 +39,10 @@ namespace ChatOverflow.Infrastructure.UserProividers.UserProvider
                 return null;
             return user;
         }
+
+        #endregion
+
+        #region Create
 
         public async Task<IdentityResult> CreateAsync(string username, string email, string password)
         {
@@ -81,5 +87,7 @@ namespace ChatOverflow.Infrastructure.UserProividers.UserProvider
 
             return errors;
         }
+
+        #endregion
     }
 }

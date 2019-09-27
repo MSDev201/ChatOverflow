@@ -8,6 +8,7 @@ import { NavBarComponent } from '../../common/nav-bar/nav-bar.component';
 import { SideNavComponent } from './side-nav/side-nav.component';
 import { CreateGroupChatPageComponent } from './pages/create-group-chat-page/create-group-chat-page.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 
@@ -22,7 +23,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     CommonModule,
     ChatAreaRoutingModule,
     ReactiveFormsModule,
-    CommonElementsModule
+    CommonElementsModule,
+    NgbModule
   ],
 })
 export class ChatAreaModule { }
