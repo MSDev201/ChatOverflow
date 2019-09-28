@@ -30,9 +30,9 @@
 
     <div class="form-group autocomplete" *ngIf="createGroupForm?.value?.access?.usersInList">
         <label class="col-form-label">Nutzer der Gruppe hinzufügen</label>
-        <input type="text" class="form-control" placeholder="Nutzer suchen..." (focusout)="userSearch('')" (focus)="userSearch($event.target.value)" (keyup)="userSearch($event.target.value)">
+        <input #searchUser type="text" class="form-control" placeholder="Nutzer suchen..." (focusout)="userSearch('')" (focus)="userSearch($event.target.value)" (keyup)="userSearch($event.target.value)">
         <div class="autocomplete-res">
-            <div class="autocomplete-item" *ngFor="let user of foundUsers$ | async">
+            <div class="autocomplete-item" *ngFor="let user of foundUsers$ | async" (click)="selectUser(user); searchUser.value = ''">
                 <div class="ac-user-content">
                     <div class="user-img" [style.background-image]="'url(https://avatars0.githubusercontent.com/u/29818976?s=460&v=4)'"></div>
                     <div class="user-details">
@@ -40,6 +40,17 @@
                         <span>{{ user.userName }}</span>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="createGroupForm?.value?.access?.usersInList && selectedUsers.length > 0" class="selected-users-container">
+        <label>{{selectedUsers.length}} Nutzer in dieser Gruppe</label>
+        <div *ngFor="let user of selectedUsers.reverse()" class="selected-user">
+            <div class="user-img" [style.background-image]="'url(https://avatars0.githubusercontent.com/u/29818976?s=460&v=4)'"></div>
+            <div class="user-details">
+                <span class="title">{{ user.displayName }}</span>
+                <span>{{ user.userName }}</span>
             </div>
         </div>
     </div>
