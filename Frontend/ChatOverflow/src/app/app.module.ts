@@ -1,3 +1,4 @@
+import { GroupChatService } from './services/chat/group-chat.service';
 import { UserService } from './services/user/user.service';
 import { ApiService } from './services/api.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -31,7 +32,8 @@ import { HttpClientModule } from '@angular/common/http';
   providers: [
     UserAuthService,
     ApiService,
-    UserService
+    UserService,
+    GroupChatService
   ],
   bootstrap: [AppComponent]
 })
