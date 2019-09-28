@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using ChatOverflow.Models.DB.ChatModels;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +11,12 @@ namespace ChatOverflow.Models.DB.UserModels
     {
         public ICollection<UserSpecificToken> Tokens { get; set; }
 
+        public ICollection<GroupChatMember> GroupChats { get; set; }
+
         public User()
         {
             Tokens = new List<UserSpecificToken>();
+            GroupChats = new List<GroupChatMember>();
         }
     }
 }

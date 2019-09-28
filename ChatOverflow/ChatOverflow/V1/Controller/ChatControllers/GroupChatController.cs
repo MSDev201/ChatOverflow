@@ -27,6 +27,27 @@ namespace ChatOverflow.V1.Controller.ChatControllers
             _user = user;
         }
 
+        #region Get
+
+        [HttpGet("List/CurrentUser")]
+        public async Task<IActionResult> GetAllByCurrentUser()
+        {
+            var userId = GetCurrentUserId();
+            if (userId == null)
+                return Unauthorized();
+            var user = await _user.GetByIdAsync(userId);
+            if (user == null)
+                return Forbid();
+
+            var groupChats = await _groupChat.GetByUserAsync(user);
+            if (groupChats == null)
+                return BadRequest();
+            return Ok(GroupChatToResult(groupChats));
+        }
+
+        #endregion
+
+
         #region Create
 
         [HttpPost("Create")]
@@ -63,6 +84,17 @@ namespace ChatOverflow.V1.Controller.ChatControllers
 
 
         #region NonActions
+
+        [NonAction]
+        public ICollection<GroupChatResult> GroupChatToResult(ICollection<GroupChat> inputObj)
+        {
+            var chats = new List<GroupChatResult>();
+            foreach(var inputChat in inputObj)
+            {
+                chats.Add(GroupChatToResult(inputChat));
+            }
+            return chats;
+        }
 
         [NonAction]
         public GroupChatResult GroupChatToResult(GroupChat inputObj)

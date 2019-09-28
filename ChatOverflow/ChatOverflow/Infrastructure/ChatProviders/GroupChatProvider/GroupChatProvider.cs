@@ -30,6 +30,11 @@ namespace ChatOverflow.Infrastructure.ChatProviders.GroupChatProvider
                 && (user == null || user != null && x.Members.SingleOrDefault(y => y.Member.Id.Equals(user.Id, StringComparison.Ordinal)) != null));
         }
 
+        public async Task<ICollection<GroupChat>> GetByUserAsync(User user)
+        {
+            return await _context.Entry(user).Collection(x => x.GroupChats).Query().Select(x => x.Chat).ToListAsync();
+        }
+
         #endregion
 
         #region Create

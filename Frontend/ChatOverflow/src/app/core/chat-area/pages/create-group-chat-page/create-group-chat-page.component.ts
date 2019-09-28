@@ -82,9 +82,7 @@ export class CreateGroupChatPageComponent implements OnInit {
       members
     };
 
-    this.groupChatService.Create(newGroup).subscribe(res => {
-      console.log(res);
-    });
+    this.groupChatService.Create(newGroup).subscribe();
   }
 
 }
