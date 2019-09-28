@@ -23,16 +23,18 @@ namespace ChatOverflow.Infrastructure.ChatProviders.GroupChatProvider
 
         #region Get
 
-        public async Task<GroupChat> GetById(string id)
+        public async Task<GroupChat> GetById(string id, User user = null)
         {
-            return await _context.GroupChats.SingleOrDefaultAsync(x => x.Id.Equals(id, StringComparison.Ordinal));
+            return await _context.GroupChats
+                .SingleOrDefaultAsync(x => x.Id.Equals(id, StringComparison.Ordinal)
+                && (user == null || user != null && x.Members.SingleOrDefault(y => y.Member.Id.Equals(user.Id, StringComparison.Ordinal)) != null));
         }
 
         #endregion
 
         #region Create
 
-        public async Task<GroupChat> Create(string name, User creator, string password = null, bool createLink = false)
+        public async Task<GroupChat> CreateAsync(string name, User creator, string password = null, bool createLink = false)
         {
             var newChat = new GroupChat
             {
@@ -56,10 +58,23 @@ namespace ChatOverflow.Infrastructure.ChatProviders.GroupChatProvider
 
         #endregion
 
+        #region Check
+
+        public async Task<bool> HasMember(GroupChat chat, User member)
+        {
+            var membersEntry = _context.Entry<GroupChat>(chat).Collection(x => x.Members);
+            return (await membersEntry.Query().SingleOrDefaultAsync(x => x.Member.Id.Equals(member.Id, StringComparison.Ordinal))) != null;
+        }
+
+        #endregion
+
         #region Change
 
         public async Task<GroupChat> AddMember(GroupChat chat, User member, bool isAdmin = false)
         {
+            if (await HasMember(chat, member))
+                return chat;
+
             chat.Members.Add(new GroupChatMember
             {
                 IsAdmin = isAdmin,
@@ -71,10 +86,13 @@ namespace ChatOverflow.Infrastructure.ChatProviders.GroupChatProvider
             return chat;
         }
 
-        public async Task<GroupChat> AddMembers(GroupChat chat, ICollection<User> members, bool areAdmins = false)
+        public async Task<GroupChat> AddMembersAsync(GroupChat chat, ICollection<User> members, bool areAdmins = false)
         {
             foreach(var user in members)
             {
+                if (await HasMember(chat, user))
+                    continue;
+
                 chat.Members.Add(new GroupChatMember
                 {
                     IsAdmin = areAdmins,

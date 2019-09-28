@@ -12,8 +12,9 @@ namespace ChatOverflow.Infrastructure.ChatProviders.GroupChatProvider
     public interface IGroupChatProvider
     {
         Task<GroupChat> AddMember(GroupChat chat, User member, bool isAdmin = false);
-        Task<GroupChat> AddMembers(GroupChat chat, ICollection<User> members, bool areAdmins = false);
-        Task<GroupChat> Create(string name, User creator, string password = null, bool createLink = false);
-        Task<GroupChat> GetById(string id);
+        Task<GroupChat> AddMembersAsync(GroupChat chat, ICollection<User> members, bool areAdmins = false);
+        Task<GroupChat> CreateAsync(string name, User creator, string password = null, bool createLink = false);
+        Task<GroupChat> GetById(string id, User user = null);
+        Task<bool> HasMember(GroupChat chat, User member);
     }
 }
