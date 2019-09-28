@@ -19,8 +19,8 @@ namespace ChatOverflow.Models.DB.ChatModels
         public bool PublicAccess { get; set; }
 
         public bool LinkAccess { get; set; }
-        public bool PasswordAccess { get; set; }
-        public bool UsersInList { get; set; }
+        [MaxLength(250)]
+        public string Password { get; set; }
 
         #endregion
 
@@ -32,8 +32,7 @@ namespace ChatOverflow.Models.DB.ChatModels
             PublicAccess = false;
 
             LinkAccess = false;
-            PasswordAccess = false;
-            UsersInList = true;
+            Password = null;
 
             Members = new List<GroupChatMember>();
             Messages = new List<ChatMessage>();

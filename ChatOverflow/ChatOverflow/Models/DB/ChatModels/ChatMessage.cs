@@ -16,5 +16,10 @@ namespace ChatOverflow.Models.DB.ChatModels
         public User SentBy { get; set; }
 
         public GroupChat GroupChat { get; set; }
+
+        public ChatMessage()
+        {
+            CreatedAt = DateTime.Now;
+        }
     }
 }

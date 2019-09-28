@@ -20,5 +20,10 @@ namespace ChatOverflow.Models.DB.ChatModels
 
         public GroupChat Chat { get; set; }
 
+        public GroupChatMember()
+        {
+            EnteredAt = DateTime.Now;
+        }
+
     }
 }
