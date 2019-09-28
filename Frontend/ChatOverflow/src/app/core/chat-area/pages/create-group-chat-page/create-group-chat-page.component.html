@@ -47,6 +47,7 @@
     <div *ngIf="createGroupForm?.value?.access?.usersInList && selectedUsers.length > 0" class="selected-users-container">
         <label>{{selectedUsers.length}} Nutzer in dieser Gruppe</label>
         <div *ngFor="let user of selectedUsers.reverse()" class="selected-user">
+            <div class="user-remove" (click)="unselectUser(user)"><i class="far fa-times-circle"></i></div>
             <div class="user-img" [style.background-image]="'url(https://avatars0.githubusercontent.com/u/29818976?s=460&v=4)'"></div>
             <div class="user-details">
                 <span class="title">{{ user.displayName }}</span>

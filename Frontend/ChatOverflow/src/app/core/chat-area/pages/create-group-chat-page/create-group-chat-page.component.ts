@@ -1,9 +1,9 @@
+import { IUserDetails } from './../../../../models/user/user-details';
 import { UserService } from './../../../../services/user/user.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Observable, of, Subject } from 'rxjs';
 import { debounceTime, map, exhaustMap } from 'rxjs/operators';
-import { IUserDetails } from 'src/app/models/user/user-details';
 
 @Component({
   selector: 'app-create-group-chat-page',
@@ -67,6 +67,10 @@ export class CreateGroupChatPageComponent implements OnInit {
     this.selectedUsers = this.selectedUsers.reverse();
     this.selectedUsers.push(user);
     this.selectedUsers = this.selectedUsers.reverse();
+  }
+
+  public unselectUser(user: IUserDetails) {
+    this.selectedUsers.splice(this.selectedUsers.findIndex(x => x.id === user.id), 1);
   }
 
 }

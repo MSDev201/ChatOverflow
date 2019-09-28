@@ -129,6 +129,7 @@
         overflow-y: auto;
 
         .autocomplete-item {
+            cursor: pointer;
             background-color: $input-background-color;
             color: $font-color-foreground;
             padding: 7pt 14pt;
@@ -193,6 +194,24 @@
         width: 100%;
         display: flex;
         flex-direction: row;
+        align-items: center;
+
+        .user-remove {
+            cursor: pointer;
+            font-size: 16pt;
+            margin-right: 15pt;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 3pt;
+            width: 25pt;
+            height: 25pt;
+            border-radius: 100%;
+
+            &:hover {
+                background-color: $input-background-color-hover;
+            }
+        }
 
         .user-img {
             width: 25pt;
