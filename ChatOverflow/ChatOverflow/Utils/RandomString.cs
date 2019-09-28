@@ -9,6 +9,8 @@ namespace ChatOverflow.Utils
     public class RandomString
     {
 
+        public delegate bool LoopUntilTrue(string randomString);
+
         public static string Generate(int length = 50, string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890")
         {
             using (RNGCryptoServiceProvider crypto = new RNGCryptoServiceProvider())
@@ -42,6 +44,19 @@ namespace ChatOverflow.Utils
                 return new string(result);
             }
 
+        }
+
+        public static string GenerateUntilTrue(LoopUntilTrue loop, int length = 50, string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890")
+        {
+            string randString = null;
+            var res = false;
+            do
+            {
+                randString = Generate(length, chars);
+                res = loop(randString);
+            } while (res == false);
+
+            return randString;
         }
     }
 }
