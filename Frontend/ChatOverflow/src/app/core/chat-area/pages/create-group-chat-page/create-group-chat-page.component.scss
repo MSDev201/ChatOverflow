@@ -179,3 +179,46 @@
     }
 
 }
+
+.selected-users-container {
+    display: flex;
+    flex-direction: column;
+
+    .selected-user {
+        background-color: $input-background-color;
+        color: $font-color-foreground;
+        padding: 7pt 14pt;
+        transition: 0.15s all ease-in-out;
+        border-top: 1pt solid rgba($input-background-color-hover, 0.3);
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+
+        .user-img {
+            width: 25pt;
+            height: 25pt;
+            background-position: center;
+            background-size: cover;
+            border-radius: 100%;
+        }
+
+        .user-details {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+
+            margin: 0pt 15pt;
+
+            span {
+                margin: 0pt 5pt;
+                color: rgba($font-color-foreground, 0.5);
+            }
+
+            .title {
+                font-weight: bold;
+                color: $font-color-foreground;
+            }
+        }
+    }
+}
