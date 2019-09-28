@@ -1,4 +1,5 @@
-﻿using ChatOverflow.Models.DB.UserModels;
+﻿using ChatOverflow.Models.DB.ChatModels;
+using ChatOverflow.Models.DB.UserModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,10 @@ namespace ChatOverflow.Persistent
     {
 
         public DbSet<UserSpecificToken> UserSpecificTokens { get; set; }
+
+        public DbSet<GroupChat> GroupChats { get; set; }
+        public DbSet<GroupChatMember> GroupChatMembers { get; set; }
+        public DbSet<ChatMessage> ChatMessages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

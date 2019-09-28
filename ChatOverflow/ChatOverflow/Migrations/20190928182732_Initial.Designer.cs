@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ChatOverflow.Migrations
 {
     [DbContext(typeof(CoreDbContext))]
-    [Migration("20190923183744_AddedIdentityAndUserTokens")]
-    partial class AddedIdentityAndUserTokens
+    [Migration("20190928182732_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -18,6 +18,74 @@ namespace ChatOverflow.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("ChatOverflow.Models.DB.ChatModels.ChatMessage", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(128);
+
+                    b.Property<DateTime>("CreatedAt");
+
+                    b.Property<string>("GroupChatId");
+
+                    b.Property<string>("Message");
+
+                    b.Property<string>("SentById");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GroupChatId");
+
+                    b.HasIndex("SentById");
+
+                    b.ToTable("ChatMessages");
+                });
+
+            modelBuilder.Entity("ChatOverflow.Models.DB.ChatModels.GroupChat", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(128);
+
+                    b.Property<bool>("LinkAccess");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(250);
+
+                    b.Property<bool>("PasswordAccess");
+
+                    b.Property<bool>("PublicAccess");
+
+                    b.Property<bool>("UsersInList");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("GroupChats");
+                });
+
+            modelBuilder.Entity("ChatOverflow.Models.DB.ChatModels.GroupChatMember", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(128);
+
+                    b.Property<string>("ChatId");
+
+                    b.Property<DateTime>("EnteredAt");
+
+                    b.Property<bool>("IsAdmin");
+
+                    b.Property<string>("MemberId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChatId");
+
+                    b.HasIndex("MemberId");
+
+                    b.ToTable("GroupChatMembers");
+                });
 
             modelBuilder.Entity("ChatOverflow.Models.DB.UserModels.User", b =>
                 {
@@ -209,6 +277,28 @@ namespace ChatOverflow.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("ChatOverflow.Models.DB.ChatModels.ChatMessage", b =>
+                {
+                    b.HasOne("ChatOverflow.Models.DB.ChatModels.GroupChat", "GroupChat")
+                        .WithMany("Messages")
+                        .HasForeignKey("GroupChatId");
+
+                    b.HasOne("ChatOverflow.Models.DB.UserModels.User", "SentBy")
+                        .WithMany()
+                        .HasForeignKey("SentById");
+                });
+
+            modelBuilder.Entity("ChatOverflow.Models.DB.ChatModels.GroupChatMember", b =>
+                {
+                    b.HasOne("ChatOverflow.Models.DB.ChatModels.GroupChat", "Chat")
+                        .WithMany("Members")
+                        .HasForeignKey("ChatId");
+
+                    b.HasOne("ChatOverflow.Models.DB.UserModels.User", "Member")
+                        .WithMany()
+                        .HasForeignKey("MemberId");
                 });
 
             modelBuilder.Entity("ChatOverflow.Models.DB.UserModels.UserSpecificToken", b =>

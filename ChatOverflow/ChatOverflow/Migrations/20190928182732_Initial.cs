@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ChatOverflow.Migrations
 {
-    public partial class AddedIdentityAndUserTokens : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -45,6 +45,22 @@ namespace ChatOverflow.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GroupChats",
+                columns: table => new
+                {
+                    Id = table.Column<string>(maxLength: 128, nullable: false),
+                    Name = table.Column<string>(maxLength: 250, nullable: true),
+                    PublicAccess = table.Column<bool>(nullable: false),
+                    LinkAccess = table.Column<bool>(nullable: false),
+                    PasswordAccess = table.Column<bool>(nullable: false),
+                    UsersInList = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GroupChats", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -175,6 +191,60 @@ namespace ChatOverflow.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ChatMessages",
+                columns: table => new
+                {
+                    Id = table.Column<string>(maxLength: 128, nullable: false),
+                    Message = table.Column<string>(nullable: true),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    SentById = table.Column<string>(nullable: true),
+                    GroupChatId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ChatMessages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ChatMessages_GroupChats_GroupChatId",
+                        column: x => x.GroupChatId,
+                        principalTable: "GroupChats",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ChatMessages_AspNetUsers_SentById",
+                        column: x => x.SentById,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GroupChatMembers",
+                columns: table => new
+                {
+                    Id = table.Column<string>(maxLength: 128, nullable: false),
+                    MemberId = table.Column<string>(nullable: true),
+                    IsAdmin = table.Column<bool>(nullable: false),
+                    EnteredAt = table.Column<DateTime>(nullable: false),
+                    ChatId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GroupChatMembers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_GroupChatMembers_GroupChats_ChatId",
+                        column: x => x.ChatId,
+                        principalTable: "GroupChats",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_GroupChatMembers_AspNetUsers_MemberId",
+                        column: x => x.MemberId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -213,6 +283,26 @@ namespace ChatOverflow.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_ChatMessages_GroupChatId",
+                table: "ChatMessages",
+                column: "GroupChatId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ChatMessages_SentById",
+                table: "ChatMessages",
+                column: "SentById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GroupChatMembers_ChatId",
+                table: "GroupChatMembers",
+                column: "ChatId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GroupChatMembers_MemberId",
+                table: "GroupChatMembers",
+                column: "MemberId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserSpecificTokens_UserId",
                 table: "UserSpecificTokens",
                 column: "UserId");
@@ -236,10 +326,19 @@ namespace ChatOverflow.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "ChatMessages");
+
+            migrationBuilder.DropTable(
+                name: "GroupChatMembers");
+
+            migrationBuilder.DropTable(
                 name: "UserSpecificTokens");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "GroupChats");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
