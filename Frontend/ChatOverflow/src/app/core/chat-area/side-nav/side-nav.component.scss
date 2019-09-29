@@ -21,6 +21,10 @@
             background-color: rgba($sidenav-color, 0.9);
         }
 
+        &.active {
+            background-color: rgba($primary, 0.5);
+        }
+
         .chat-details {
             display: flex;
             flex-direction: column;

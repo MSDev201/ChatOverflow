@@ -23,7 +23,7 @@ namespace ChatOverflow.Infrastructure.ChatProviders.GroupChatProvider
 
         #region Get
 
-        public async Task<GroupChat> GetById(string id, User user = null)
+        public async Task<GroupChat> GetByIdAsync(string id, User user = null)
         {
             return await _context.GroupChats
                 .SingleOrDefaultAsync(x => x.Id.Equals(id, StringComparison.Ordinal)

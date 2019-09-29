@@ -17,12 +17,14 @@
         display: flex;
         width: 100vw;
         flex: 1;
+        overflow: auto;
 
         #sidenav-area {
             position: relative;
             background-color: rgba($sidenav-color, 0.9);
             width: 300pt;
             min-height: 100%;
+            overflow-y: auto;
         }
         
         #content-area {

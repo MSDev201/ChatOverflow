@@ -45,6 +45,22 @@ namespace ChatOverflow.V1.Controller.ChatControllers
             return Ok(GroupChatToResult(groupChats));
         }
 
+        [HttpGet("CurrentUser/{id}")]
+        public async Task<IActionResult> GetByCurrentUser(string id)
+        {
+            var userId = GetCurrentUserId();
+            if (userId == null)
+                return Unauthorized();
+            var user = await _user.GetByIdAsync(userId);
+            if (user == null)
+                return Forbid();
+
+            var groupChat = await _groupChat.GetByIdAsync(id, user);
+            if (groupChat == null)
+                return BadRequest();
+            return Ok(GroupChatToResult(groupChat));
+        }
+
         #endregion
 
 

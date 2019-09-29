@@ -8,7 +8,7 @@ import { ChatAreaComponent } from './chat-area.component';
 
 const routes: Routes = [
   { path: '', component: ChatAreaComponent, children: [
-    { path: '', component: ChatPageComponent },
+    { path: 'group/:id', component: ChatPageComponent },
     { path: 'create/group', component: CreateGroupChatPageComponent }
   ]}
 ];

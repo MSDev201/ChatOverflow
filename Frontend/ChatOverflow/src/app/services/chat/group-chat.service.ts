@@ -46,6 +46,25 @@ export class GroupChatService {
     
   }
 
+  public Get(id: string) {
+    const foundGroup = this.groupChats == null ? null : this.groupChats.find(x => x.id === id);
+    if (foundGroup == null) {
+      return this.apiService.MakeSecureGetRequest<IGroupChat>('v1/GroupChat/CurrentUser/' + encodeURI(id)).pipe(
+        map(res => {
+          if (res.status === 200) {
+            if (this.groupChats == null) {
+              this.groupChats = [];
+            }
+            this.groupChats.push(res.body);
+            this.groupChatsChanged$.next(this.groupChats);
+            return res.body;
+          }
+        })
+      )
+    }
+    return of(foundGroup);
+  }
+
   private addGroup(chat: IGroupChat) {
     this.groupChats.push(chat);
     this.groupChatsChanged$.next(this.groupChats);
