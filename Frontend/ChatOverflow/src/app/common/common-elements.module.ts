@@ -6,12 +6,14 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { Nl2brPipe } from './pipes/nl2br.pipe';
 
 
 
 @NgModule({
   declarations: [
-    NavBarComponent
+    NavBarComponent,
+    Nl2brPipe
   ],
   imports: [
     RouterModule,
@@ -21,7 +23,8 @@ import { RouterModule } from '@angular/router';
     NgbModule
   ],
   exports: [
-    NavBarComponent
+    NavBarComponent,
+    Nl2brPipe
   ]
 })
 export class CommonElementsModule { }

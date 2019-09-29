@@ -14,7 +14,8 @@ import { ChatAreaModule } from './core/chat-area/chat-area.module';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { SignAreaModule } from './core/sign-area/sign-area.module';
 import { UserAuthService } from './services/user/user-auth.service';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { JsonDateInterceptor } from './special/http-interceptor';
 
 
 @NgModule({
@@ -33,7 +34,12 @@ import { HttpClientModule } from '@angular/common/http';
     UserAuthService,
     ApiService,
     UserService,
-    GroupChatService
+    GroupChatService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JsonDateInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })

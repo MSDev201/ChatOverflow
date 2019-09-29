@@ -1,3 +1,4 @@
+import { IChatMessage } from 'src/app/models/chat/chat-message';
 import { UserService } from './../../../../services/user/user.service';
 import { GroupChatService } from './../../../../services/chat/group-chat.service';
 import { IGroupChat } from './../../../../models/chat/group-chat';
@@ -12,7 +13,7 @@ import { exhaustMap, switchMap, map } from 'rxjs/operators';
 })
 export class ChatPageComponent implements OnInit {
 
-  public messages = [];
+  public messages: IChatMessage[] = [];
   public chat: IGroupChat;
   public currentUser$;
 
@@ -41,6 +42,7 @@ export class ChatPageComponent implements OnInit {
       map(messagesRes => {
         if(messagesRes.status === 200) {
           this.messages = messagesRes.body;
+          this.updateMessages();
         }
       })
     ).subscribe();
@@ -57,17 +59,18 @@ export class ChatPageComponent implements OnInit {
 
     this.groupChatService.SendMessage(this.chat.id, {
       message: content
-    }).subscribe();
-
-    this.messages = this.messages.reverse();
-    this.messages.push({
-      id: 'kjsldkfsd',
-      message: content,
-      createdAt: new Date(Date.now())
+    }).subscribe(res => {
+      if (res.status === 200) {
+        this.messages.push(res.body);
+        this.updateMessages();
+      }
     });
-    this.messages = this.messages.reverse();
 
     event.target.innerHTML = '';
+  }
+
+  private updateMessages() {
+    this.messages = this.messages.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
   }
 
 }

@@ -17,9 +17,8 @@
                         {{msg?.createdBy?.displayName}}
                     </div>
                     <div class="chat-msg">
-                        {{ msg?.message }}
-                        <br>
-                        <small>{{ msg?.createdAt }}</small>
+                        <div [innerHTML]="msg?.message | nl2br"></div>
+                        <small>{{ msg?.createdAt | date }}</small>
                     </div>
                 </div>
             </div>
