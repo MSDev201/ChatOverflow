@@ -35,6 +35,61 @@ namespace ChatOverflow.Infrastructure.ChatProviders.GroupChatProvider
             return await _context.Entry(user).Collection(x => x.GroupChats).Query().Select(x => x.Chat).ToListAsync();
         }
 
+
+        public async Task<ChatMessage> GetMessageByIdAsync(GroupChat chat, string msgId)
+        {
+            return await _context
+                .Entry(chat)
+                .Collection(x => x.Messages)
+                .Query()
+                .Include(x => x.SentBy)
+                .SingleOrDefaultAsync(x => x.Id.Equals(msgId, StringComparison.Ordinal));
+        }
+
+        public async Task<ICollection<ChatMessage>> GetMessagesAsync(GroupChat chat, int limit = 100)
+        {
+            return await _context.Entry(chat)
+                .Collection(x => x.Messages)
+                .Query()
+                .Include(x => x.SentBy)
+                .OrderByDescending(x => x.CreatedAt)
+                .Take(limit)
+                .ToListAsync();
+        }
+
+        public async Task<ICollection<ChatMessage>> GetMessagesOlderThan(GroupChat chat, string lastMessageId, int limit = 100)
+        {
+            var message = await GetMessageByIdAsync(chat, lastMessageId);
+            if (message == null)
+                return null;
+            return await _context.Entry(chat)
+                .Collection(x => x.Messages)
+                .Query()
+                .Include(x => x.SentBy)
+                .Where(x => x.CreatedAt <= message.CreatedAt)
+                .OrderByDescending(x => x.CreatedAt)
+                .Take(limit)
+                .OrderBy(x => x.CreatedAt)
+                .TakeWhile(x => !x.Id.Equals(message.Id, StringComparison.Ordinal))
+                .ToListAsync();
+        }
+
+        public async Task<ICollection<ChatMessage>> GetMessagesNewerThan(GroupChat chat, string lastMessageId, int limit = 100)
+        {
+            var message = await GetMessageByIdAsync(chat, lastMessageId);
+            if (message == null)
+                return null;
+            return await _context.Entry(chat)
+                .Collection(x => x.Messages)
+                .Query()
+                .Where(x => x.CreatedAt >= message.CreatedAt)
+                .OrderBy(x => x.CreatedAt)
+                .Take(limit)
+                .OrderByDescending(x => x.CreatedAt)
+                .TakeWhile(x => !x.Id.Equals(message.Id, StringComparison.Ordinal))
+                .ToListAsync();
+        }
+
         #endregion
 
         #region Create
@@ -59,6 +114,20 @@ namespace ChatOverflow.Infrastructure.ChatProviders.GroupChatProvider
             await _context.SaveChangesAsync();
 
             return newChat;
+        }
+
+        public async Task<ChatMessage> CreateMessageAsync(GroupChat chat, User sender, string message)
+        {
+            // TODO: Implement message limit in timeframe
+            var newMessage = new ChatMessage
+            {
+                Message = message,
+                SentBy = sender,
+                CreatedAt = DateTime.Now
+            };
+            chat.Messages.Add(newMessage);
+            await _context.SaveChangesAsync();
+            return newMessage;
         }
 
         #endregion

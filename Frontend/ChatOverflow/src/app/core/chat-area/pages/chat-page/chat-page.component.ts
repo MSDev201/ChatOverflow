@@ -1,3 +1,4 @@
+import { UserService } from './../../../../services/user/user.service';
 import { GroupChatService } from './../../../../services/chat/group-chat.service';
 import { IGroupChat } from './../../../../models/chat/group-chat';
 import { Component, OnInit } from '@angular/core';
@@ -13,13 +14,15 @@ export class ChatPageComponent implements OnInit {
 
   public messages = [];
   public chat: IGroupChat;
+  public currentUser$;
 
   private currentId: string;
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private groupChatService: GroupChatService
+    private groupChatService: GroupChatService,
+    private userServie: UserService
   ) {
     this.activatedRoute.paramMap.pipe(
       switchMap(x => {
@@ -30,17 +33,32 @@ export class ChatPageComponent implements OnInit {
 
         this.messages = [];
         this.chat = x;
+        return x;
+      }),
+      switchMap((x) => {
+        return this.groupChatService.GetMessages(x.id);
+      }),
+      map(messagesRes => {
+        if(messagesRes.status === 200) {
+          this.messages = messagesRes.body;
+        }
       })
     ).subscribe();
   }
 
   ngOnInit() {
+    this.currentUser$ = this.userServie.GetCurrentUserDetails();
   }
 
   public sendMessage(event: any) {
     event.preventDefault();
 
     const content = event.target.innerText;
+
+    this.groupChatService.SendMessage(this.chat.id, {
+      message: content
+    }).subscribe();
+
     this.messages = this.messages.reverse();
     this.messages.push({
       id: 'kjsldkfsd',

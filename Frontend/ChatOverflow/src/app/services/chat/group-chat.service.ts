@@ -4,6 +4,8 @@ import { Injectable } from '@angular/core';
 import { ApiService } from '../api.service';
 import { Observable, of, throwError, Subject } from 'rxjs';
 import { exhaustMap, map, catchError } from 'rxjs/operators';
+import { IChatMessageInput } from 'src/app/models/api/chat/chat-message-input';
+import { IChatMessage } from 'src/app/models/chat/chat-message';
 
 @Injectable({
   providedIn: 'root'
@@ -63,6 +65,14 @@ export class GroupChatService {
       )
     }
     return of(foundGroup);
+  }
+
+  public SendMessage(groupId: string, data: IChatMessageInput) {
+    return this.apiService.MakeSecurePostRequest<IChatMessage>('v1/GroupChat/Message/Create/' + encodeURI(groupId), data);
+  }
+
+  public GetMessages(groupId: string) {
+    return this.apiService.MakeSecureGetRequest<IChatMessage[]>('v1/GroupChat/Messages/' + encodeURI(groupId)).pipe();
   }
 
   private addGroup(chat: IGroupChat) {

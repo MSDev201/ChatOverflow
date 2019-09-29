@@ -42,7 +42,10 @@ namespace ChatOverflow.V1.Controller.ChatControllers
             var groupChats = await _groupChat.GetByUserAsync(user);
             if (groupChats == null)
                 return BadRequest();
-            return Ok(GroupChatToResult(groupChats));
+            var res = new List<GroupChatResult>();
+            foreach (var groupChat in groupChats)
+                res.Add(new GroupChatResult(groupChat));
+            return Ok(res);
         }
 
         [HttpGet("CurrentUser/{id}")]
@@ -58,7 +61,35 @@ namespace ChatOverflow.V1.Controller.ChatControllers
             var groupChat = await _groupChat.GetByIdAsync(id, user);
             if (groupChat == null)
                 return BadRequest();
-            return Ok(GroupChatToResult(groupChat));
+            return Ok(new GroupChatResult(groupChat));
+        }
+
+        #endregion
+
+        #region GetMessages
+
+        [HttpGet("Messages/{groupId}")]
+        public async Task<IActionResult> GetMessages(string groupId, int limit = 100)
+        {
+            var userId = GetCurrentUserId();
+            if (userId == null)
+                return Unauthorized();
+            var user = await _user.GetByIdAsync(userId);
+            if (user == null)
+                return Forbid();
+            var groupChat = await _groupChat.GetByIdAsync(groupId, user);
+            if (groupChat == null)
+                return NotFound();
+            limit = limit > 1000 ? 1000 : limit;
+            limit = limit < 0 ? 0 : limit;
+
+            var messages = await _groupChat.GetMessagesAsync(groupChat, limit);
+            var res = new List<ChatMessageResult>();
+
+            foreach (var message in messages)
+                res.Add(new ChatMessageResult(message));
+
+            return Ok(res);
         }
 
         #endregion
@@ -90,7 +121,7 @@ namespace ChatOverflow.V1.Controller.ChatControllers
                 }
                 await _groupChat.AddMembersAsync(res, users, false);
 
-                return Ok(GroupChatToResult(res));
+                return Ok(new GroupChatResult(res));
             }
 
             return BadRequest();
@@ -98,29 +129,26 @@ namespace ChatOverflow.V1.Controller.ChatControllers
 
         #endregion
 
+        #region CreateMessage
 
-        #region NonActions
-
-        [NonAction]
-        public ICollection<GroupChatResult> GroupChatToResult(ICollection<GroupChat> inputObj)
+        [HttpPost("Message/Create/{groupId}")]
+        public async Task<IActionResult> CreateMessage(string groupId, [FromBody] ChatMessageInput inputMsg)
         {
-            var chats = new List<GroupChatResult>();
-            foreach(var inputChat in inputObj)
-            {
-                chats.Add(GroupChatToResult(inputChat));
-            }
-            return chats;
-        }
+            var userId = GetCurrentUserId();
+            if (userId == null)
+                return Unauthorized();
+            var user = await _user.GetByIdAsync(userId);
+            if (user == null)
+                return Forbid();
+            var groupChat = await _groupChat.GetByIdAsync(groupId, user);
+            if (groupChat == null)
+                return NotFound();
 
-        [NonAction]
-        public GroupChatResult GroupChatToResult(GroupChat inputObj)
-        {
+            var newMessage = await _groupChat.CreateMessageAsync(groupChat, user, inputMsg.Message);
+            if (newMessage == null)
+                return BadRequest();
 
-            return new GroupChatResult
-            {
-                Id = inputObj.Id,
-                Name = inputObj.Name,
-            };
+            return Ok(new ChatMessageResult(newMessage));
         }
 
         #endregion

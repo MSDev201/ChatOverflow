@@ -27,6 +27,7 @@ export class UserService {
           return this.apiService.MakeSecureGetRequest<IUserDetails>('v1/User/Details').pipe(
             map(res => {
               if (res.status === 200) {
+                this.currentUserDetails = res.body;
                 return res.body;
               }
             }),

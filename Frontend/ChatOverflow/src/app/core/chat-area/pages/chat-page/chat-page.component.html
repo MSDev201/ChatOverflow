@@ -11,10 +11,10 @@
     </div>
     <div class="chat-msg-group">
         <div class="chat-msg-items">
-            <div class="chat-msg-item" [class.own-msg]="msg?.id === 'kjsldkf'" *ngFor="let msg of messages">
+            <div class="chat-msg-item" [class.own-msg]="msg?.createdBy?.id === (currentUser$ | async)?.id" *ngFor="let msg of messages">
                 <div class="chat-content">
                     <div class="chat-autor">
-                        MSDev
+                        {{msg?.createdBy?.displayName}}
                     </div>
                     <div class="chat-msg">
                         {{ msg?.message }}
