@@ -5,16 +5,46 @@ using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using ChatOverflow.Infrastructure.SocketProvider;
+using ChatOverflow.Infrastructure.UserProividers.UserProvider;
+using ChatOverflow.V1.Models.ContentModels;
+using ChatOverflow.V1.Models.SocketModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace ChatOverflow.V1.Controller
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class SocketController : ControllerBase
+    public class SocketController : ApiController
     {
+
+        private readonly ISocketProvider _socket;
+        private readonly IUserProvider _user;
+
+        public SocketController(ISocketProvider socket, IUserProvider user)
+        {
+            _socket = socket;
+            _user = user;
+        }
+
+
+        [Authorize]
+        [HttpGet("Token")]
+        public async Task<IActionResult> GetToken()
+        {
+            var userId = GetCurrentUserId();
+            if (userId == null)
+                return Unauthorized();
+            var user = await _user.GetByIdAsync(userId);
+            if (user == null)
+                return Forbid();
+
+            var token = await _socket.GenerateAccessTokenAsync(user);
+            if (token == null)
+                return BadRequest();
+            return Ok(new StringContent { Value = token.Token });
+        }
 
         [HttpGet("ws")]
         public async Task GetWebSocketAsync()
@@ -25,11 +55,53 @@ namespace ChatOverflow.V1.Controller
             if (isSocketRequest)
             {
                 WebSocket ws = await context.WebSockets.AcceptWebSocketAsync();
-                await GetMessages(context, ws);
+
+                if(!(await AuthenticateAsync(ws)))
+                {
+                    await ws.CloseAsync(WebSocketCloseStatus.NormalClosure, "Invalide credentials", CancellationToken.None);
+                }
+                
+                while(ws.State == WebSocketState.Open)
+                {
+                    await GetMessages(context, ws);
+                }
+                // Handle close
+
+                
             }
             else
                 context.Response.StatusCode = 400;
         }
+
+        [NonAction]
+        private async Task<bool> AuthenticateAsync(WebSocket ws)
+        {
+            var handshake = await ReceiveAsyc<HandshakeInput>(ws);
+            if (_socket.GetUserByAccessToken(handshake.Token) == null)
+                return false;
+            return true;
+
+        }
+
+        [NonAction]
+        private async Task<T> ReceiveAsyc<T>(WebSocket ws)
+        {
+            var message = new List<byte>();
+            WebSocketReceiveResult response;
+            var cancelToken = new CancellationToken();
+            var buffer = new byte[4096];
+            do
+            {
+                response = await ws.ReceiveAsync(buffer, cancelToken);
+                message.AddRange(new ArraySegment<byte>(buffer, 0, response.Count));
+            } while (!response.EndOfMessage);
+
+            var resString = Encoding.ASCII.GetString(message.ToArray());
+            var resObj = JsonConvert.DeserializeObject<T>(resString);
+
+            return resObj;
+        }
+
 
         [NonAction]
         private async Task GetMessages(HttpContext context, WebSocket webSocket)
@@ -52,18 +124,22 @@ namespace ChatOverflow.V1.Controller
             var arraySegment = new ArraySegment<byte>(bytes);
             await webSocket.SendAsync(arraySegment, WebSocketMessageType.Text, true, CancellationToken.None);
 
-            var buffer = new byte[1024 * 4];
-            var result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+        }
 
-            var resBytes = new byte[result.Count];
-            Array.Copy(buffer, 0, resBytes, 0, resBytes.Length);
+        [NonAction]
+        private async Task<(WebSocketReceiveResult, IEnumerable<byte>)> ReceiveFullMessage(WebSocket socket, CancellationToken cancelToken)
+        {
+            WebSocketReceiveResult response;
+            var message = new List<byte>();
 
-            var resString = Encoding.ASCII.GetString(resBytes);
-            var resObj = JsonConvert.DeserializeObject(resString);
+            var buffer = new byte[4096];
+            do
+            {
+                response = await socket.ReceiveAsync(new ArraySegment<byte>(buffer), cancelToken);
+                message.AddRange(new ArraySegment<byte>(buffer, 0, response.Count));
+            } while (!response.EndOfMessage);
 
-            Thread.Sleep(2000); //sleeping so that we can see several messages are sent
-
-            await webSocket.SendAsync(new ArraySegment<byte>(null), WebSocketMessageType.Binary, false, CancellationToken.None);
+            return (response, message);
         }
     }
 }

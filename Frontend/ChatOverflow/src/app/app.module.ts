@@ -16,6 +16,7 @@ import { SignAreaModule } from './core/sign-area/sign-area.module';
 import { UserAuthService } from './services/user/user-auth.service';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JsonDateInterceptor } from './special/http-interceptor';
+import { SocketService } from './services/socket.service';
 
 
 @NgModule({
@@ -35,6 +36,7 @@ import { JsonDateInterceptor } from './special/http-interceptor';
     ApiService,
     UserService,
     GroupChatService,
+    SocketService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: JsonDateInterceptor,

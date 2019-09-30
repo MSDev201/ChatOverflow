@@ -5,6 +5,7 @@ import { IGroupChat } from './../../../../models/chat/group-chat';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { exhaustMap, switchMap, map } from 'rxjs/operators';
+import { SocketService } from 'src/app/services/socket.service';
 
 @Component({
   selector: 'app-chat-page',
@@ -23,7 +24,8 @@ export class ChatPageComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private groupChatService: GroupChatService,
-    private userServie: UserService
+    private userServie: UserService,
+    private socketService: SocketService
   ) {
     this.activatedRoute.paramMap.pipe(
       switchMap(x => {
