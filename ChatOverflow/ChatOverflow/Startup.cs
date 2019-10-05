@@ -131,6 +131,9 @@ namespace ChatOverflow
             // Add cors because of browser
             services.AddCors();
 
+            // SignalR
+            services.AddSignalR();
+
             // Disable authentication on dev
 
             if (Env.IsDevelopment())
@@ -157,7 +160,7 @@ namespace ChatOverflow
                     }
                 });
                 app.UseDeveloperExceptionPage();
-                app.UseCors(x => x.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+                app.UseCors(x => x.WithOrigins("http://*.localhost", "http://localhost", "http://*.localhost:4200", "http://localhost:4200").AllowAnyHeader().AllowAnyMethod().AllowCredentials());
             }
             else
             {
@@ -174,7 +177,8 @@ namespace ChatOverflow
 
             app.UseAuthentication();
 
-            app.UseWebSockets();
+            //app.UseWebSockets();
+            app.UseHubs();
 
             app.UseMvc();
 
