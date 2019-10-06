@@ -1,3 +1,5 @@
+import { ChatHubService } from './services/hub/chat-hub.service';
+import { HubService } from './services/hub/hub.service';
 import { GroupChatService } from './services/chat/group-chat.service';
 import { UserService } from './services/user/user.service';
 import { ApiService } from './services/api.service';
@@ -16,7 +18,6 @@ import { SignAreaModule } from './core/sign-area/sign-area.module';
 import { UserAuthService } from './services/user/user-auth.service';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JsonDateInterceptor } from './special/http-interceptor';
-import { SocketService } from './services/socket.service';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { SocketService } from './services/socket.service';
     ApiService,
     UserService,
     GroupChatService,
-    SocketService,
+    HubService,
+    ChatHubService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: JsonDateInterceptor,

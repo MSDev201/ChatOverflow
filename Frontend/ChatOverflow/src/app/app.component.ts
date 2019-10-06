@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { SocketService } from './services/socket.service';
 
 @Component({
   selector: 'app-root',
@@ -10,8 +9,5 @@ import { SocketService } from './services/socket.service';
 export class AppComponent {
   title = 'ChatOverflow';
 
-  constructor(private router: Router, private socketService: SocketService) {
-    
-    
-  }
+  constructor(private router: Router) {}
 }

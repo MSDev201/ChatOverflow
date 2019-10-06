@@ -6,11 +6,13 @@ using ChatOverflow.Infrastructure.ChatProviders.GroupChatProvider;
 using ChatOverflow.Infrastructure.UserProividers.UserProvider;
 using ChatOverflow.Models.DB.ChatModels;
 using ChatOverflow.Models.DB.UserModels;
+using ChatOverflow.V1.Hubs;
 using ChatOverflow.V1.Models.InputModels;
 using ChatOverflow.V1.Models.ResultModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace ChatOverflow.V1.Controller.ChatControllers
 {
@@ -20,11 +22,13 @@ namespace ChatOverflow.V1.Controller.ChatControllers
 
         private readonly IGroupChatProvider _groupChat;
         private readonly IUserProvider _user;
+        private readonly IHubContext<ChatHub> _chatHub;
 
-        public GroupChatController(IGroupChatProvider groupChat, IUserProvider user)
+        public GroupChatController(IGroupChatProvider groupChat, IUserProvider user, IHubContext<ChatHub> chatHub)
         {
             _groupChat = groupChat;
             _user = user;
+            _chatHub = chatHub;
         }
 
         #region Get
@@ -92,6 +96,33 @@ namespace ChatOverflow.V1.Controller.ChatControllers
             return Ok(res);
         }
 
+        [HttpGet("Messages/Newer/{groupId}/{lastMsgId}")]
+        public async Task<IActionResult> GetNewerMessages(string groupId, string lastMsgId, int limit = 100)
+        {
+            var userId = GetCurrentUserId();
+            if (userId == null)
+                return Unauthorized();
+            var user = await _user.GetByIdAsync(userId);
+            if (user == null)
+                return Forbid();
+            var groupChat = await _groupChat.GetByIdAsync(groupId, user);
+            if (groupChat == null)
+                return NotFound();
+            limit = limit > 1000 ? 1000 : limit;
+            limit = limit < 0 ? 0 : limit;
+
+            var messages = await _groupChat.GetMessagesNewerThanAsync(groupChat, lastMsgId, limit);
+            if (messages == null)
+                return BadRequest();
+
+            var res = new List<ChatMessageResult>();
+
+            foreach (var message in messages)
+                res.Add(new ChatMessageResult(message));
+
+            return Ok(res);
+        }
+
         #endregion
 
 
@@ -147,6 +178,8 @@ namespace ChatOverflow.V1.Controller.ChatControllers
             var newMessage = await _groupChat.CreateMessageAsync(groupChat, user, inputMsg.Message);
             if (newMessage == null)
                 return BadRequest();
+
+            await _chatHub.Clients.Group(ChatHub.GroupChatSymbol + "#" + groupId).SendAsync(ChatHub.NewGroupMessageEvent);
 
             return Ok(new ChatMessageResult(newMessage));
         }

@@ -1,11 +1,11 @@
+import { ChatHubService } from './../../../../services/hub/chat-hub.service';
 import { IChatMessage } from 'src/app/models/chat/chat-message';
 import { UserService } from './../../../../services/user/user.service';
 import { GroupChatService } from './../../../../services/chat/group-chat.service';
 import { IGroupChat } from './../../../../models/chat/group-chat';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { exhaustMap, switchMap, map } from 'rxjs/operators';
-import { SocketService } from 'src/app/services/socket.service';
+import { exhaustMap, switchMap, map, last } from 'rxjs/operators';
 
 @Component({
   selector: 'app-chat-page',
@@ -25,7 +25,7 @@ export class ChatPageComponent implements OnInit {
     private router: Router,
     private groupChatService: GroupChatService,
     private userServie: UserService,
-    private socketService: SocketService
+    private chatHubService: ChatHubService
   ) {
     this.activatedRoute.paramMap.pipe(
       switchMap(x => {
@@ -52,6 +52,35 @@ export class ChatPageComponent implements OnInit {
 
   ngOnInit() {
     this.currentUser$ = this.userServie.GetCurrentUserDetails();
+
+    // Listen to events
+    this.chatHubService.newGroupMessageEvent$.subscribe(() => {
+      var lastChatMessage = this.messages.length <= 0 ? null : this.messages[0];
+      if (lastChatMessage == null) {
+        this.groupChatService.GetMessages(this.chat.id).pipe(
+          map(x => {
+            if (x.status === 200) {
+              this.messages = x.body;
+              this.updateMessages();
+            }
+          })
+        ).subscribe();
+      } else {
+        this.groupChatService.GetNewerMessages(this.chat.id, lastChatMessage.id).pipe(
+          map(x => {
+            if (x.status === 200) {
+              for (const newChatMsg of x.body) {
+                if (this.messages.find(y => y.id === newChatMsg.id) == null) {
+                  this.messages.push(newChatMsg);
+                }
+              }
+              
+              this.updateMessages();
+            }
+          })
+        ).subscribe();
+      }
+    });
   }
 
   public sendMessage(event: any) {

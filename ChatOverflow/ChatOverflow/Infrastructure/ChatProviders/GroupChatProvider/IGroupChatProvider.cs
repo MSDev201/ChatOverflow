@@ -19,7 +19,7 @@ namespace ChatOverflow.Infrastructure.ChatProviders.GroupChatProvider
         Task<ICollection<GroupChat>> GetByUserAsync(User user);
         Task<ChatMessage> GetMessageByIdAsync(GroupChat chat, string msgId);
         Task<ICollection<ChatMessage>> GetMessagesAsync(GroupChat chat, int limit = 100);
-        Task<ICollection<ChatMessage>> GetMessagesNewerThan(GroupChat chat, string lastMessageId, int limit = 100);
+        Task<ICollection<ChatMessage>> GetMessagesNewerThanAsync(GroupChat chat, string lastMessageId, int limit = 100);
         Task<ICollection<ChatMessage>> GetMessagesOlderThan(GroupChat chat, string lastMessageId, int limit = 100);
         Task<bool> HasMember(GroupChat chat, User member);
     }

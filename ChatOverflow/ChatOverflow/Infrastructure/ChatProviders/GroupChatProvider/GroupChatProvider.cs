@@ -66,15 +66,15 @@ namespace ChatOverflow.Infrastructure.ChatProviders.GroupChatProvider
                 .Collection(x => x.Messages)
                 .Query()
                 .Include(x => x.SentBy)
-                .Where(x => x.CreatedAt <= message.CreatedAt)
+                .Where(x => x.CreatedAt <= message.CreatedAt && x.Id != message.Id)
                 .OrderByDescending(x => x.CreatedAt)
                 .Take(limit)
-                .OrderBy(x => x.CreatedAt)
-                .TakeWhile(x => !x.Id.Equals(message.Id, StringComparison.Ordinal))
+                //.OrderBy(x => x.CreatedAt)
+                //.TakeWhile(x => !x.Id.Equals(message.Id, StringComparison.Ordinal))
                 .ToListAsync();
         }
 
-        public async Task<ICollection<ChatMessage>> GetMessagesNewerThan(GroupChat chat, string lastMessageId, int limit = 100)
+        public async Task<ICollection<ChatMessage>> GetMessagesNewerThanAsync(GroupChat chat, string lastMessageId, int limit = 100)
         {
             var message = await GetMessageByIdAsync(chat, lastMessageId);
             if (message == null)
@@ -82,11 +82,12 @@ namespace ChatOverflow.Infrastructure.ChatProviders.GroupChatProvider
             return await _context.Entry(chat)
                 .Collection(x => x.Messages)
                 .Query()
-                .Where(x => x.CreatedAt >= message.CreatedAt)
+                .Include(x => x.SentBy)
+                .Where(x => x.CreatedAt >= message.CreatedAt && x.Id != message.Id)
                 .OrderBy(x => x.CreatedAt)
                 .Take(limit)
-                .OrderByDescending(x => x.CreatedAt)
-                .TakeWhile(x => !x.Id.Equals(message.Id, StringComparison.Ordinal))
+                //.OrderByDescending(x => x.CreatedAt)
+                //.TakeWhile(x => !x.Id.Equals(message.Id, StringComparison.Ordinal))
                 .ToListAsync();
         }
 

@@ -75,6 +75,10 @@ export class GroupChatService {
     return this.apiService.MakeSecureGetRequest<IChatMessage[]>('v1/GroupChat/Messages/' + encodeURI(groupId)).pipe();
   }
 
+  public GetNewerMessages(groupId: string, lastMsgId: string) {
+    return this.apiService.MakeSecureGetRequest<IChatMessage[]>('v1/GroupChat/Messages/Newer/' + encodeURI(groupId) + '/' + encodeURI(lastMsgId)).pipe();
+  }
+
   private addGroup(chat: IGroupChat) {
     this.groupChats.push(chat);
     this.groupChatsChanged$.next(this.groupChats);
