@@ -21,6 +21,7 @@ Grundlegende Funktionen sind vorhanden, allerdings fehlt auch noch einiges.
 Backend:
  1. Alle Pakete für das Backend installieren (`dotnet restore`).
  2. MySql-Datenbank erstellen und in den appsettings.json eintragen.
+
 Frontend:
  1. NodeJs installieren (am besten die neueste Version)
  2. Im Frontend-Order `Frontend/ChatOverflow/` alle npm-Packete installieren `npm install`
